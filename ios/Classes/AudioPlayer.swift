@@ -19,11 +19,12 @@ class AudioPlayer : NSObject, AVAudioPlayerDelegate {
     func preparePlayer(path: String?,volume: Double?,result:  @escaping FlutterResult){
         if(!(path ?? "").isEmpty){
             let audioUrl = URL.init(fileURLWithPath: path!)
-            if player = try? AVAudioPlayer(contentsOf: audioUrl) {
+            do {
+                player = try AVAudioPlayer(contentsOf: audioUrl)
                 player?.prepareToPlay()
                 player?.volume = Float(volume ?? 1.0)
                 result(true)
-            } else {
+            } catch {
                 result(FlutterError(code: Constants.audioWaveforms, message: "Audio file can't read", details: nil))
             }
         }else {
